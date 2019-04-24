@@ -14,13 +14,13 @@ module.exports.run = async (event) => {
         await dynomodb.put(params).promise();
 
         return {
-            statusCode: 200,
+            statusCode: '200',
             body: JSON.stringify(data)
         }
     }
     catch(e){
         return {
-            statusCode: 404,
+            statusCode: '404',
             body: JSON.stringify({msg: `Something happen ${e}`})
         }
     }
@@ -46,7 +46,7 @@ module.exports.bulk = async (event) => {
     }
     catch(e) {
        return {
-            statusCode: 404,
+            statusCode: '404',
             body: JSON.stringify('Somenthing happen ', e)
         }
     }
