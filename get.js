@@ -32,7 +32,7 @@ module.exports.run = async (event) => {
     }
     catch(e) {
         return {
-            statusCode: '200',
+            statusCode: '404',
             body:  JSON.stringify(`something happen ${e}`),
             headers: {
                 'Content-Type': 'application/json'
