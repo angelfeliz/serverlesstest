@@ -1,0 +1,47 @@
+service: users
+
+plugins:
+  - serverless-offline
+
+custom:
+  tableName: user-${self:provider.stage}
+  serverless-offline:
+    port: 1221
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  environment:
+    TABLE_NAME: ${self:custom.tableName}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
+      Resource: "arn:aws:dynamodb:us-east-1:350458656298:table/user-dev"
+      
+functions:
+  createUser:
+    handler: create.run
+    events:
+      - http:
+          path: create
+          method: post
+  bulkUser:
+    handler: create.bulk
+    events:
+      - http:
+          path: bulk
+          method: post
+  findUser:
+    handler: get.run
+    events:
+      - http:
+          path: find/{ids}
+          method: get
+resources:
+  - ${file(resources/table.yml)}
